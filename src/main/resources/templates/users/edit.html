@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit User</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<h1>Edit User</h1>
+
+<form th:action="@{/admin/edit}" th:object="${user}" method="POST">
+    <input type="hidden" th:field="*{id}"/>
+
+    <label for="username">Username</label>
+    <input type="text" id="username" th:field="*{username}" required>
+    <div class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username error</div>
+    <br/>
+
+    <label for="lastName">Last Name</label>
+    <input type="text" id="lastName" th:field="*{lastName}" required>
+    <div class="error" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last Name error</div>
+    <br/>
+
+    <label for="password">Password</label>
+    <input type="password" id="password" th:field="*{password}" placeholder="Enter new password">
+    <div class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error</div>
+    <br/>
+
+    <h3>Roles</h3>
+    <th:block th:each="role : ${listRole}">
+        <input type="checkbox" th:field="*{roles}" th:value="${role.id}" th:id="'role_' + ${role.id}"/>
+        <label th:for="'role_' + ${role.id}" th:text="${role.name}"></label>
+        <br/>
+    </th:block>
+    <br/>
+
+    <button type="submit">Update User</button>
+</form>
+
+<form th:action="@{/logout}" th:method="POST">
+    <input type="submit" value="Logout"/>
+</form>
+</body>
+</html>
